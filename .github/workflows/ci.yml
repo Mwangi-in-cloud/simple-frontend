@@ -47,7 +47,7 @@ jobs:
         run: | 
           ## configuring git creds 
           git config --global credential.helper store 
-          echo "https://${REPO_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
+          echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
 
           ## remove any repos present 
           rm -rf gitops 
@@ -63,7 +63,7 @@ jobs:
           git commit -m "Update image to ${{ github.sha }}"
 
           # push 
-          git push -f https://${{REPO_TOKEN}}@github.com/Mwangi-in-cloud/simple-frontend-CD.git@github.com/Mwangi-in-cloud/simple-frontend-CD.git main 
+          git push -f https://${GIT_TOKEN}@github.com/Mwangi-in-cloud/simple-frontend-CD.git@github.com/Mwangi-in-cloud/simple-frontend-CD.git main 
     
    
      
