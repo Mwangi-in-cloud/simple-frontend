@@ -35,7 +35,7 @@ jobs:
       - name: run trivy image scan for simple image 
         uses: aquasecurity/trivy-actions@0.28.0
         with: 
-          scan-type: 'image' ## means the docker image
+          scan-type: image ## means the docker image
           image-ref: ${{ secrets.DOCKER_USERNAME }}/claudera:${{ github.sha }} ## path you want to scan
           format: 'table' ## the output format we expect
           exit-code: "0"
