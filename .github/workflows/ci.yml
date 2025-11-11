@@ -23,7 +23,7 @@ jobs:
          docker build -t ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }} .
      - name: now tag the image 
        run: | 
-        docker tag ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }} -t ${{ vars.DOCKERHUB_REPO }}/claudera:latest
+        docker tag ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }} 
      - name: push docker image
        run: | 
          docker push ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }}
