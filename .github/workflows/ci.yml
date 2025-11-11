@@ -40,30 +40,38 @@ jobs:
           ignore-unfixed: true 
           vuln-type: os,library
           severity: CRITICAL,HIGH      
-      - name: update-CD-repository 
-        shell: bash
-        env:
-          GIT_TOKEN: ${{secrets.REPO_TOKEN}}
-        run: | 
-          ## configuring git creds 
-          git config --global credential.helper store 
-          echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
+  update-cd-repo:
+   runs-on: ubuntu-latest
+   needs: trivy-image-scan
+   steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-          ## remove any repos present 
-          rm -rf gitops 
-          ## clone our repo to this dir 
-          git clone https://github.com/Mwangi-in-cloud/simple-frontend-CD.git gitops
-          cd gitops
-          sed -i "s|image: ${{ vars.DOCKERHUB_REPO }}/claudera:.*|image: ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }}|g" deployment.yml
+    - name: Configure Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git config --global credential.helper store
+        echo "https://${{ secrets.REPO_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
 
-          ## commit the changes
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add deployment.yaml
-          git commit -m "Update image to ${{ github.sha }}"
+    - name: Clone CD repository
+      run: |
+        rm -rf gitops
+        git clone https://github.com/Mwangi-in-cloud/simple-frontend-CD.git gitops
 
-          # push 
-          git push -f https://${GIT_TOKEN}@github.com/Mwangi-in-cloud/simple-frontend-CD.git@github.com/Mwangi-in-cloud/simple-frontend-CD.git main 
+    - name: Update image tag in deployment file
+      working-directory: gitops
+      run: |
+        sed -i "s|image: ${{ vars.DOCKERHUB_REPO }}/claudera:.*|image: ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }}|g" deployment.yml
+
+    - name: Commit and push changes
+      working-directory: gitops
+      run: |
+        git add deployment.yml
+        git commit -m "Update image to ${{ github.sha }}" || echo "No changes to commit"
+        git push
+    
+       
     
    
      
