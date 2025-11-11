@@ -47,7 +47,7 @@ jobs:
         run: | 
           ## configuring git creds 
           git config --global credential.helper store 
-          echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
+          echo "https://${REPO_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
 
           ## remove any repos present 
           rm -rf gitops 
