@@ -64,7 +64,7 @@ jobs:
     - name: Update image tag in deployment file
       working-directory: gitops
       run: |
-        sed -i "s|image: ${{ vars.DOCKERHUB_REPO }}/claudera:.*|image: ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }}|g" deployment.yml
+        sed -i "s|image: ${{ vars.DOCKERHUB_REPO }}/claudera:.*|image: ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }}|g" cd.yml
 
     - name: Commit and push changes
       working-directory: gitops
