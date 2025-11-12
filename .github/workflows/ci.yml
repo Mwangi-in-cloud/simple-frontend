@@ -62,7 +62,7 @@ jobs:
         git clone https://github.com/Mwangi-in-cloud/simple-frontend-CD.git gitops
 
     - name: Update image tag in deployment file
-      working-directory: gitops
+      working-directory: gitops/manifests
       run: |
         sed -i "s|image: ${{ vars.DOCKERHUB_REPO }}/claudera:.*|image: ${{ vars.DOCKERHUB_REPO }}/claudera:${{ github.sha }}|g" cd.yml
 
