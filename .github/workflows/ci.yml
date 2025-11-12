@@ -69,7 +69,7 @@ jobs:
     - name: Commit and push changes
       working-directory: gitops
       run: |
-        git add deployment.yml
+        git add manifests/cd.yml
         git commit -m "Update image to ${{ github.sha }}" || echo "No changes to commit"
         git push
     
